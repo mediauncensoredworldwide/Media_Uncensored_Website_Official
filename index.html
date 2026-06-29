@@ -1546,6 +1546,7 @@
             input.value = s.placePrediction.text.toString();
             sessionToken = new AutocompleteSessionToken();
             removeSuggestions();
+            input.blur();
           });
           suggestionBox.appendChild(item);
         });
