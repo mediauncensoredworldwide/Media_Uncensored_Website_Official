@@ -1303,6 +1303,28 @@
         color: var(--white);
       }
 
+      /* STREAM BUTTONS — Spotify & Apple Music: icon on line 1, text on line 2, centered */
+      .stream-btn {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        white-space: nowrap !important;
+        line-height: 1.4;
+        padding: 0.5rem 0.6rem !important;
+      }
+      .stream-icon { display: block; }
+      .stream-text { display: block; }
+      .stream-btn-spotify .stream-icon,
+      .stream-btn-spotify .stream-text {
+        color: #1DB954;
+      }
+      .stream-btn-apple .stream-icon,
+      .stream-btn-apple .stream-text {
+        color: #fc3c44;
+      }
+
       /* SIGNUP */
       .signup-submit-row { flex-direction: column; }
       .signup-submit-row input[type="email"] {
@@ -1323,8 +1345,8 @@
         font-family: 'Space Mono', monospace;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: var(--grey-dim);
         padding: 1.6rem 1.2rem 0;
+        margin: 0;
         font-size: clamp(0.5rem, 4.2vw, 0.85rem);
         white-space: nowrap;
       }
@@ -1332,7 +1354,7 @@
       /* FOOTER — 2 rows: nav links | copyright, both stretched to match margins */
       footer {
         flex-direction: column;
-        align-items: stretch;
+        align-items: center;
         padding: 1.4rem 1.2rem 1.8rem;
         gap: 0.9rem;
       }
@@ -1344,6 +1366,8 @@
         gap: 0;
         width: 100%;
         list-style: none;
+        margin: 0;
+        padding: 0;
       }
       .footer-nav a {
         font-size: clamp(0.4rem, 2.6vw, 0.58rem);
@@ -1356,6 +1380,7 @@
         white-space: nowrap;
         width: 100%;
         text-align: center;
+        margin: 0;
       }
     }
 
@@ -1485,8 +1510,8 @@
   <h2 class="section-title">Releases</h2>
   <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem;padding:1rem 1.4rem;background:var(--ash);border:1px solid var(--dust);border-left:3px solid var(--aqua);">
     <span style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--aqua);flex:1;font-weight:700;">Stream Cyrus</span>
-    <a href="https://open.spotify.com/artist/2glGPfiHoGwsDqpAji3F5z?si=8o6j21zvQvC61aEIy06rOg" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--white);border:1px solid var(--dust);padding:0.5rem 1rem;text-decoration:none;transition:border-color 0.2s,color 0.2s;" onmouseover="this.style.borderColor='#1DB954';this.style.color='#1DB954'" onmouseout="this.style.borderColor='var(--dust)';this.style.color='var(--white)'">▶ Spotify</a>
-    <a href="https://music.apple.com/us/artist/cyrus/1395889044" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--white);border:1px solid var(--dust);padding:0.5rem 1rem;text-decoration:none;transition:border-color 0.2s,color 0.2s;" onmouseover="this.style.borderColor='#fc3c44';this.style.color='#fc3c44'" onmouseout="this.style.borderColor='var(--dust)';this.style.color='var(--white)'">♪ Apple Music</a>
+    <a href="https://open.spotify.com/artist/2glGPfiHoGwsDqpAji3F5z?si=8o6j21zvQvC61aEIy06rOg" target="_blank" rel="noopener" class="stream-btn stream-btn-spotify" style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--white);border:1px solid var(--dust);padding:0.5rem 1rem;text-decoration:none;transition:border-color 0.2s,color 0.2s;" onmouseover="this.style.borderColor='#1DB954';this.style.color='#1DB954'" onmouseout="this.style.borderColor='var(--dust)';this.style.color='var(--white)'"><span class="stream-icon">▶</span><span class="stream-text">Spotify</span></a>
+    <a href="https://music.apple.com/us/artist/cyrus/1395889044" target="_blank" rel="noopener" class="stream-btn stream-btn-apple" style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--white);border:1px solid var(--dust);padding:0.5rem 1rem;text-decoration:none;transition:border-color 0.2s,color 0.2s;" onmouseover="this.style.borderColor='#fc3c44';this.style.color='#fc3c44'" onmouseout="this.style.borderColor='var(--dust)';this.style.color='var(--white)'"><span class="stream-icon">♪</span><span class="stream-text">Apple Music</span></a>
   </div>
   <div class="releases-list">
 
@@ -1769,7 +1794,7 @@
 
 <!-- MOBILE-ONLY BRAND LINE — appears just above footer on mobile -->
 <div class="mobile-brand-line">
-  <span>Media Uncensored Worldwide</span>&nbsp;<span style="color:var(--red);">Est. 2021</span>
+  <span style="color:var(--aqua);">Media Uncensored Worldwide</span>&nbsp;<span style="color:var(--red);">Est. 2021</span>
 </div>
 
 <!-- FOOTER -->
