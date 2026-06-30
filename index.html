@@ -1343,12 +1343,16 @@
         display: block;
         text-align: center;
         font-family: 'Space Mono', monospace;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
         padding: 1.6rem 1.2rem 0;
         margin: 0;
-        font-size: clamp(0.5rem, 4.2vw, 0.85rem);
+        font-size: clamp(0.42rem, 3.6vw, 0.7rem);
         white-space: nowrap;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
       }
 
       /* FOOTER — 2 rows: nav links | copyright, both stretched to match margins */
@@ -1357,6 +1361,9 @@
         align-items: center;
         padding: 1.4rem 1.2rem 1.8rem;
         gap: 0.9rem;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
       }
       .footer-mark { display: none; }
       .footer-nav {
@@ -1365,6 +1372,8 @@
         justify-content: space-between;
         gap: 0;
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
         list-style: none;
         margin: 0;
         padding: 0;
@@ -1375,10 +1384,12 @@
         white-space: nowrap;
       }
       .footer-copy {
-        font-size: clamp(0.42rem, 3vw, 0.62rem);
-        letter-spacing: 0.05em;
+        font-size: clamp(0.36rem, 2.6vw, 0.55rem);
+        letter-spacing: 0.04em;
         white-space: nowrap;
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
         text-align: center;
         margin: 0;
       }
