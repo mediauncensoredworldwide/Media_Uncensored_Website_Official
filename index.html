@@ -1109,6 +1109,8 @@
       color: var(--grey-dim);
     }
 
+    .mobile-brand-line { display: none; }
+
     /* ══════════════════════════════════════════
        MOBILE — max-width: 768px
     ══════════════════════════════════════════ */
@@ -1119,53 +1121,77 @@
       .nav-links, .nav-cta { display: none; }
       .hamburger { display: flex; }
 
-      /* HERO — logo centered at top, no dead gap, title big, buttons side by side */
-      #home { min-height: 100svh; }
+      /* HERO — logo centered at top, no dead gap, title big, one line, buttons side by side, all text centered */
+      #home {
+        min-height: auto;
+        display: block;
+      }
       .hero-content {
         grid-template-columns: 1fr;
-        padding: 58px 1.2rem 2rem;
-        gap: 0.9rem;
+        padding: 58px 1rem 1.5rem;
+        gap: 0.7rem;
+        display: flex;
+        flex-direction: column;
       }
-      /* Logo: above text, centered, order -1, tight below nav */
+      /* Logo: above text, centered, tight below nav, no gap */
       .hero-right {
         display: flex;
         justify-content: center;
         order: -1;
-        margin-bottom: 0;
+        margin: 0;
       }
       .hero-logo {
-        width: 44vw;
-        max-width: 180px;
+        width: 40vw;
+        max-width: 160px;
       }
-      /* Title: big, close to side margins */
+      .hero-left {
+        align-items: center;
+        text-align: center;
+      }
+      .hero-tag { text-align: center; }
+      /* Title: big, hits side margins (matches nav wordmark spacing), one line for t1 */
       .hero-title {
-        margin-bottom: 0.9rem;
+        margin-bottom: 0.8rem;
+        text-align: center;
+        width: 100%;
       }
-      .hero-title .t1,
+      .hero-title .t1 {
+        font-size: clamp(1.3rem, 7.2vw, 1.85rem);
+        white-space: nowrap;
+      }
       .hero-title .t2 {
-        font-size: clamp(1.75rem, 9.5vw, 2.4rem);
-        white-space: normal;
+        font-size: clamp(1.6rem, 8.5vw, 2.3rem);
+        white-space: nowrap;
       }
       .hero-title .t3 {
-        font-size: clamp(1.2rem, 6.5vw, 1.7rem);
-        white-space: normal;
+        font-size: clamp(1.1rem, 6vw, 1.5rem);
+        white-space: nowrap;
       }
-      .hero-sub { max-width: 100%; font-size: 0.8rem; margin-bottom: 1rem; }
-      /* Buttons: side by side, smaller padding, bigger font */
+      .hero-sub {
+        max-width: 100%;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+        text-align: center;
+        border-left: none;
+        padding-left: 0;
+      }
+      /* Buttons: side by side, narrow, bigger legible text */
       .hero-actions {
         flex-direction: row;
         gap: 0.6rem;
         flex-wrap: nowrap;
+        justify-content: center;
+        width: 100%;
       }
       .hero-actions .btn-solid,
       .hero-actions .btn-ghost {
         flex: 1;
         text-align: center;
-        padding: 0.7rem 0.5rem;
-        font-size: 0.72rem;
-        letter-spacing: 0.1em;
+        padding: 0.75rem 0.4rem;
+        font-size: 0.74rem;
+        letter-spacing: 0.08em;
       }
-      .hero-scroll { padding: 0.8rem 1.2rem; }
+      .hero-scroll { padding: 0.7rem 1.2rem; }
 
       /* SECTIONS — uniform side padding matches nav wordmark spacing */
       section { padding: 3.5rem 1.2rem; }
@@ -1186,52 +1212,49 @@
         letter-spacing: 0.1em;
       }
 
-      /* RELEASES — stacked cards, all buttons visible stacked vertically */
-      .releases-list { border: none; }
+      /* RELEASES — keep original row layout: num + title/artist on left, status + stacked buttons on right */
+      .releases-list { border: 1px solid var(--dust); }
       .release-row {
         display: grid;
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto auto auto;
-        gap: 0.3rem 0.8rem;
-        padding: 1rem 1.2rem;
-        border: 1px solid var(--dust);
-        border-bottom: none;
+        grid-template-columns: 28px 1fr auto;
+        grid-template-rows: auto auto;
+        column-gap: 0.7rem;
+        row-gap: 0.3rem;
+        padding: 1rem 1rem;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
         align-items: start;
       }
-      .release-row:last-child { border-bottom: 1px solid var(--dust); }
+      .release-row:last-child { border-bottom: none; }
       .release-num {
         font-size: 0.6rem;
-        color: var(--red);
         grid-column: 1;
-        grid-row: 1;
+        grid-row: 1 / 3;
         padding-top: 0.15rem;
       }
       .release-info {
         grid-column: 2;
-        grid-row: 1;
+        grid-row: 1 / 3;
       }
-      .release-name { font-size: 0.95rem; }
-      .release-artist { font-size: 0.7rem; }
-      /* Type + status on same row under title */
-      .release-type {
-        font-size: 0.55rem;
-        grid-column: 1 / -1;
-        display: flex;
-        gap: 0.8rem;
-        align-items: center;
-      }
+      .release-name { font-size: 0.9rem; }
+      .release-artist { font-size: 0.68rem; }
+      /* Type hidden on mobile to save space — status stays */
+      .release-type { display: none; }
       .release-status-plain,
       .release-status-plain-soon {
         font-size: 0.55rem;
-        display: inline;
+        grid-column: 3;
+        grid-row: 1;
+        justify-self: end;
+        margin-bottom: 0.3rem;
       }
-      /* Buttons: stacked column, full width of card */
+      /* Buttons: narrow stacked column on the right, under the status */
       .release-btns-wrap {
         display: flex;
         flex-direction: column;
-        gap: 0.35rem;
-        grid-column: 1 / -1;
-        width: 100%;
+        gap: 0.3rem;
+        grid-column: 3;
+        grid-row: 2;
+        align-items: stretch;
       }
       .release-row .release-btn,
       .release-row .release-btn-buy-active,
@@ -1242,10 +1265,11 @@
       .release-row .release-btn-supporter-inactive,
       .release-row .release-btn-disabled {
         display: block;
-        font-size: 0.58rem;
-        padding: 0.5rem 0.8rem;
+        font-size: 0.5rem;
+        padding: 0.32rem 0.5rem;
         text-align: center;
-        width: 100%;
+        white-space: nowrap;
+        width: auto;
         box-sizing: border-box;
       }
 
@@ -1270,6 +1294,14 @@
       }
       .video-item { width: 100%; }
       .video-frame { width: 100%; }
+      .view-all {
+        justify-content: center;
+      }
+      .view-all::after { display: none; }
+      .view-all .btn-ghost {
+        border-color: var(--red);
+        color: var(--white);
+      }
 
       /* SIGNUP */
       .signup-submit-row { flex-direction: column; }
@@ -1284,19 +1316,27 @@
       .contact-left p { margin-bottom: 1.5rem; }
       .manifesto { border-left: none; border-top: 1px solid var(--red-dim); padding-left: 0; padding-top: 2rem; }
 
-      /* FOOTER — 3 rows: brand | nav links | copyright, all one line each */
+      /* MOBILE BRAND LINE — sits just above footer, full margin width */
+      .mobile-brand-line {
+        display: block;
+        text-align: center;
+        font-family: 'Space Mono', monospace;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--grey-dim);
+        padding: 1.6rem 1.2rem 0;
+        font-size: clamp(0.5rem, 4.2vw, 0.85rem);
+        white-space: nowrap;
+      }
+
+      /* FOOTER — 2 rows: nav links | copyright, both stretched to match margins */
       footer {
         flex-direction: column;
         align-items: stretch;
-        padding: 1.6rem 1.2rem;
+        padding: 1.4rem 1.2rem 1.8rem;
         gap: 0.9rem;
       }
-      .footer-mark {
-        font-size: clamp(0.42rem, 2.8vw, 0.58rem);
-        letter-spacing: 0.1em;
-        white-space: nowrap;
-        width: 100%;
-      }
+      .footer-mark { display: none; }
       .footer-nav {
         display: flex;
         flex-wrap: nowrap;
@@ -1306,15 +1346,16 @@
         list-style: none;
       }
       .footer-nav a {
-        font-size: clamp(0.38rem, 2.4vw, 0.55rem);
-        letter-spacing: 0.08em;
+        font-size: clamp(0.4rem, 2.6vw, 0.58rem);
+        letter-spacing: 0.06em;
         white-space: nowrap;
       }
       .footer-copy {
-        font-size: clamp(0.38rem, 2.2vw, 0.52rem);
-        letter-spacing: 0.06em;
+        font-size: clamp(0.42rem, 3vw, 0.62rem);
+        letter-spacing: 0.05em;
         white-space: nowrap;
         width: 100%;
+        text-align: center;
       }
     }
 
@@ -1726,6 +1767,11 @@
   </div>
 </section>
 
+<!-- MOBILE-ONLY BRAND LINE — appears just above footer on mobile -->
+<div class="mobile-brand-line">
+  <span>Media Uncensored Worldwide</span>&nbsp;<span style="color:var(--red);">Est. 2021</span>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-mark"><span>Media Uncensored Worldwide</span> &nbsp;<span style="color:var(--red);">Est. 2021</span></div>
@@ -1739,6 +1785,7 @@
   </ul>
   <div class="footer-copy" style="color:var(--red);">© <span id="footer-year"></span> Media Uncensored Worldwide. All rights reserved.</div>
 </footer>
+
 
 <script>
   // Footer year
