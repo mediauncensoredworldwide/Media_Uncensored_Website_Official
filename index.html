@@ -132,10 +132,45 @@
       cursor: pointer;
       background: none;
       border: none;
+      padding: 4px;
     }
     .hamburger span {
       display: block; width: 22px; height: 1px;
       background: var(--white);
+      transition: transform 0.25s, opacity 0.25s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* Mobile nav drawer */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(5,5,5,0.97);
+      z-index: 490;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-family: 'Space Mono', monospace;
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .mobile-nav a:hover { color: var(--aqua); }
+    .mobile-nav .mobile-nav-cta {
+      color: var(--black);
+      background: var(--aqua);
+      padding: 0.9rem 2.5rem;
+      font-size: 0.8rem;
     }
 
     /* ── HERO ── */
@@ -843,7 +878,6 @@
     .signup-field-row input::placeholder { color: var(--grey-dim); }
     .signup-field-row input:focus { border-color: var(--aqua); }
 
-    /* Location field wrapper — needed for autocomplete dropdown positioning */
     .location-field-wrap {
       position: relative;
       flex: 1;
@@ -1075,32 +1109,223 @@
       color: var(--grey-dim);
     }
 
-    /* ── MOBILE ── */
-    @media (max-width: 900px) {
-      nav { padding: 1rem 1.5rem; }
+    /* ══════════════════════════════════════════
+       MOBILE — max-width: 768px
+    ══════════════════════════════════════════ */
+    @media (max-width: 768px) {
+
+      /* NAV */
+      nav { padding: 1rem 1.2rem; }
       .nav-links, .nav-cta { display: none; }
       .hamburger { display: flex; }
+
+      /* HERO — logo centered at top, no dead gap, title big, buttons side by side */
       #home { min-height: 100svh; }
       .hero-content {
         grid-template-columns: 1fr;
-        padding: 0 1.5rem 3rem;
-        padding-top: 90px;
+        padding: 58px 1.2rem 2rem;
+        gap: 0.9rem;
       }
-      .hero-right { display: none; }
-      .hero-scroll { padding: 1.2rem 1.5rem; }
-      section { padding: 5rem 1.5rem; }
-      .artists-wrap { grid-template-columns: 1fr; }
-      .contact-split { grid-template-columns: 1fr; gap: 3rem; }
+      /* Logo: above text, centered, order -1, tight below nav */
+      .hero-right {
+        display: flex;
+        justify-content: center;
+        order: -1;
+        margin-bottom: 0;
+      }
+      .hero-logo {
+        width: 44vw;
+        max-width: 180px;
+      }
+      /* Title: big, close to side margins */
+      .hero-title {
+        margin-bottom: 0.9rem;
+      }
+      .hero-title .t1,
+      .hero-title .t2 {
+        font-size: clamp(1.75rem, 9.5vw, 2.4rem);
+        white-space: normal;
+      }
+      .hero-title .t3 {
+        font-size: clamp(1.2rem, 6.5vw, 1.7rem);
+        white-space: normal;
+      }
+      .hero-sub { max-width: 100%; font-size: 0.8rem; margin-bottom: 1rem; }
+      /* Buttons: side by side, smaller padding, bigger font */
+      .hero-actions {
+        flex-direction: row;
+        gap: 0.6rem;
+        flex-wrap: nowrap;
+      }
+      .hero-actions .btn-solid,
+      .hero-actions .btn-ghost {
+        flex: 1;
+        text-align: center;
+        padding: 0.7rem 0.5rem;
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+      }
+      .hero-scroll { padding: 0.8rem 1.2rem; }
+
+      /* SECTIONS — uniform side padding matches nav wordmark spacing */
+      section { padding: 3.5rem 1.2rem; }
+      .section-title { font-size: clamp(1.8rem, 8vw, 2.8rem); margin-bottom: 2rem; }
+
+      /* STORE */
+      .store-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+      }
+      .store-cover-wrap { padding: 0 0.6rem; }
+      .store-card-body h3 { font-size: 0.95rem; }
+      .store-card-body p { font-size: 0.72rem; }
+      .store-price { font-size: 0.65rem; }
+      .store-card-body .btn-solid {
+        font-size: 0.55rem;
+        padding: 0.7rem 0.8rem;
+        letter-spacing: 0.1em;
+      }
+
+      /* RELEASES — stacked cards, all buttons visible stacked vertically */
+      .releases-list { border: none; }
       .release-row {
-        grid-template-columns: 40px 1fr auto;
-        gap: 0.8rem;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 0.3rem 0.8rem;
+        padding: 1rem 1.2rem;
+        border: 1px solid var(--dust);
+        border-bottom: none;
+        align-items: start;
       }
-      .release-type { display: none; }
-      .release-btn { display: none; }
+      .release-row:last-child { border-bottom: 1px solid var(--dust); }
+      .release-num {
+        font-size: 0.6rem;
+        color: var(--red);
+        grid-column: 1;
+        grid-row: 1;
+        padding-top: 0.15rem;
+      }
+      .release-info {
+        grid-column: 2;
+        grid-row: 1;
+      }
+      .release-name { font-size: 0.95rem; }
+      .release-artist { font-size: 0.7rem; }
+      /* Type + status on same row under title */
+      .release-type {
+        font-size: 0.55rem;
+        grid-column: 1 / -1;
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+      }
+      .release-status-plain,
+      .release-status-plain-soon {
+        font-size: 0.55rem;
+        display: inline;
+      }
+      /* Buttons: stacked column, full width of card */
+      .release-btns-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        grid-column: 1 / -1;
+        width: 100%;
+      }
+      .release-row .release-btn,
+      .release-row .release-btn-buy-active,
+      .release-row .release-btn-buy-inactive,
+      .release-row .release-btn-yt,
+      .release-row .release-btn-yt-disabled,
+      .release-row .release-btn-supporter,
+      .release-row .release-btn-supporter-inactive,
+      .release-row .release-btn-disabled {
+        display: block;
+        font-size: 0.58rem;
+        padding: 0.5rem 0.8rem;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* ARTISTS */
+      .artists-wrap { grid-template-columns: 1fr; }
+      .artist-block { padding: 2rem 1.2rem; }
+      .artist-name { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+
+      /* COMICS */
+      .comics-header { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+      .comics-grid { grid-template-columns: 1fr 1fr; }
+      .comic-cover-wrap { padding: 0 0.6rem; }
+      .comic-title { font-size: 0.95rem; }
+      .comic-issue { font-size: 0.55rem; }
+
+      /* VIDEOS — constrained so nothing bleeds past margin */
+      .video-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        width: 100%;
+        overflow: hidden;
+      }
+      .video-item { width: 100%; }
+      .video-frame { width: 100%; }
+
+      /* SIGNUP */
       .signup-submit-row { flex-direction: column; }
-      .signup-submit-row input[type="email"] { border-right: 1px solid var(--dust); border-bottom: none; }
-      footer { flex-direction: column; align-items: flex-start; }
-      .footer-nav { flex-wrap: wrap; gap: 1.2rem; }
+      .signup-submit-row input[type="email"] {
+        border-right: 1px solid var(--dust);
+        border-bottom: none;
+      }
+      .signup-submit-row button { width: 100%; padding: 1rem; }
+
+      /* CONTACT */
+      .contact-split { grid-template-columns: 1fr; gap: 2.5rem; }
+      .contact-left p { margin-bottom: 1.5rem; }
+      .manifesto { border-left: none; border-top: 1px solid var(--red-dim); padding-left: 0; padding-top: 2rem; }
+
+      /* FOOTER — 3 rows: brand | nav links | copyright, all one line each */
+      footer {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1.6rem 1.2rem;
+        gap: 0.9rem;
+      }
+      .footer-mark {
+        font-size: clamp(0.42rem, 2.8vw, 0.58rem);
+        letter-spacing: 0.1em;
+        white-space: nowrap;
+        width: 100%;
+      }
+      .footer-nav {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        gap: 0;
+        width: 100%;
+        list-style: none;
+      }
+      .footer-nav a {
+        font-size: clamp(0.38rem, 2.4vw, 0.55rem);
+        letter-spacing: 0.08em;
+        white-space: nowrap;
+      }
+      .footer-copy {
+        font-size: clamp(0.38rem, 2.2vw, 0.52rem);
+        letter-spacing: 0.06em;
+        white-space: nowrap;
+        width: 100%;
+      }
+    }
+
+    /* Small phones — extra tight */
+    @media (max-width: 400px) {
+      .store-grid { grid-template-columns: 1fr; }
+      .comics-grid { grid-template-columns: 1fr; }
+      .hero-logo { width: 50vw; }
+      .hero-title .t1,
+      .hero-title .t2 { font-size: clamp(1.5rem, 10vw, 1.9rem); }
+      .hero-title .t3 { font-size: clamp(1rem, 7vw, 1.4rem); }
     }
   </style>
   <!-- Google tag (gtag.js) — GA4 -->
@@ -1115,6 +1340,17 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzwDQV-R7ZmzkH8-l1lR7h62rmL12VhBE&libraries=places&v=weekly" defer></script>
 </head>
 <body>
+
+<!-- MOBILE NAV DRAWER -->
+<div class="mobile-nav" id="mobile-nav">
+  <a href="#store" class="mobile-nav-link">Store</a>
+  <a href="#music" class="mobile-nav-link">Music</a>
+  <a href="#artists" class="mobile-nav-link">Artists</a>
+  <a href="#comics" class="mobile-nav-link">Series</a>
+  <a href="#videos" class="mobile-nav-link">Videos</a>
+  <a href="#contact" class="mobile-nav-link">Contact</a>
+  <a href="#signup" class="mobile-nav-cta mobile-nav-link">Join the list</a>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -1131,7 +1367,7 @@
     <li><a href="#contact">Contact</a></li>
   </ul>
   <a href="#signup" class="nav-cta">Join the list</a>
-  <button class="hamburger" aria-label="Menu">
+  <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -1221,9 +1457,11 @@
       </div>
       <span class="release-type">Single</span>
       <span class="release-status-plain">Out Now</span>
-      <span class="release-btn release-btn-buy-inactive">Buy Direct</span>
-      <span class="release-btn release-btn-supporter-inactive">Supporter Pack</span>
-      <a href="https://youtu.be/UkCcr9limw8?si=xsX7EIX7SlMdZYMy" target="_blank" rel="noopener" class="release-btn release-btn-yt">YouTube</a>
+      <div class="release-btns-wrap">
+        <span class="release-btn release-btn-buy-inactive">Buy Direct</span>
+        <span class="release-btn release-btn-supporter-inactive">Supporter Pack</span>
+        <a href="https://youtu.be/UkCcr9limw8?si=xsX7EIX7SlMdZYMy" target="_blank" rel="noopener" class="release-btn release-btn-yt">YouTube</a>
+      </div>
     </div>
 
     <div class="release-row">
@@ -1234,9 +1472,11 @@
       </div>
       <span class="release-type">Single</span>
       <span class="release-status-plain">Out Now</span>
-      <span class="release-btn release-btn-buy-inactive">Buy Direct</span>
-      <span class="release-btn release-btn-supporter-inactive">Supporter Pack</span>
-      <a href="https://youtu.be/MfVmpOV1ZtQ?si=hDddc-hq4ejsAkh0" target="_blank" rel="noopener" class="release-btn release-btn-yt">YouTube</a>
+      <div class="release-btns-wrap">
+        <span class="release-btn release-btn-buy-inactive">Buy Direct</span>
+        <span class="release-btn release-btn-supporter-inactive">Supporter Pack</span>
+        <a href="https://youtu.be/MfVmpOV1ZtQ?si=hDddc-hq4ejsAkh0" target="_blank" rel="noopener" class="release-btn release-btn-yt">YouTube</a>
+      </div>
     </div>
 
     <div class="release-row">
@@ -1247,9 +1487,11 @@
       </div>
       <span class="release-type">Single</span>
       <span class="release-status-plain">Out Now</span>
-      <a href="https://thephreshfactory.square.site/product/cyrus-frostbite-single-digital-download-mp3-flac-wav-cover-art-/VP45XNTE7BKL5HVSNEO7QMZ2?cp=true&sa=false&sbp=false&q=false&category_id=BIG6N3UOXCLBZNOC57X7APWI" target="_blank" rel="noopener" class="release-btn release-btn-buy-active">Buy Direct</a>
-      <a href="https://thephreshfactory.square.site/product/cyrus-frostbite-supporter-pack-digital-download-extras-/OXSWQ2YVFXYWBANXV5LIZ66S?cp=true&sa=false&sbp=false&q=false&category_id=BIG6N3UOXCLBZNOC57X7APWI" target="_blank" rel="noopener" class="release-btn release-btn-supporter">Supporter Pack</a>
-      <a href="https://youtu.be/YUkLegdxSAk?si=jFo4im-5O-tQZllO" target="_blank" rel="noopener" class="release-btn release-btn-yt">YouTube</a>
+      <div class="release-btns-wrap">
+        <a href="https://thephreshfactory.square.site/product/cyrus-frostbite-single-digital-download-mp3-flac-wav-cover-art-/VP45XNTE7BKL5HVSNEO7QMZ2?cp=true&sa=false&sbp=false&q=false&category_id=BIG6N3UOXCLBZNOC57X7APWI" target="_blank" rel="noopener" class="release-btn release-btn-buy-active">Buy Direct</a>
+        <a href="https://thephreshfactory.square.site/product/cyrus-frostbite-supporter-pack-digital-download-extras-/OXSWQ2YVFXYWBANXV5LIZ66S?cp=true&sa=false&sbp=false&q=false&category_id=BIG6N3UOXCLBZNOC57X7APWI" target="_blank" rel="noopener" class="release-btn release-btn-supporter">Supporter Pack</a>
+        <a href="https://youtu.be/YUkLegdxSAk?si=jFo4im-5O-tQZllO" target="_blank" rel="noopener" class="release-btn release-btn-yt">YouTube</a>
+      </div>
     </div>
 
     <div class="release-row">
@@ -1260,9 +1502,11 @@
       </div>
       <span class="release-type">Single</span>
       <span class="release-status-plain">Out Now</span>
-      <span class="release-btn release-btn-buy-inactive">Buy Direct</span>
-      <span class="release-btn release-btn-supporter-inactive">Supporter Pack</span>
-      <a href="https://youtu.be/yNGVy1rK-Rg?si=HvQmtRYKptjhsuGY" target="_blank" rel="noopener" class="release-btn release-btn-yt">YouTube</a>
+      <div class="release-btns-wrap">
+        <span class="release-btn release-btn-buy-inactive">Buy Direct</span>
+        <span class="release-btn release-btn-supporter-inactive">Supporter Pack</span>
+        <a href="https://youtu.be/yNGVy1rK-Rg?si=HvQmtRYKptjhsuGY" target="_blank" rel="noopener" class="release-btn release-btn-yt">YouTube</a>
+      </div>
     </div>
 
     <div class="release-row">
@@ -1273,9 +1517,11 @@
       </div>
       <span class="release-type">Single</span>
       <span class="release-status-plain">Out Now</span>
-      <span class="release-btn release-btn-buy-inactive">Buy Direct</span>
-      <span class="release-btn release-btn-supporter-inactive">Supporter Pack</span>
-      <a href="https://youtu.be/H2pKxlYh7dY?si=vffyVAqXyF6xesnx" target="_blank" rel="noopener" class="release-btn release-btn-yt">YouTube</a>
+      <div class="release-btns-wrap">
+        <span class="release-btn release-btn-buy-inactive">Buy Direct</span>
+        <span class="release-btn release-btn-supporter-inactive">Supporter Pack</span>
+        <a href="https://youtu.be/H2pKxlYh7dY?si=vffyVAqXyF6xesnx" target="_blank" rel="noopener" class="release-btn release-btn-yt">YouTube</a>
+      </div>
     </div>
 
     <div class="release-row">
@@ -1286,9 +1532,11 @@
       </div>
       <span class="release-type">Album</span>
       <span class="release-status-plain">Out Now</span>
-      <a href="https://thephreshfactory.square.site/product/CYRUS-NIGHTMAREZ_Full-Album_Digital-Download/19?cp=true&sa=false&sbp=false&q=false&category_id=BIG6N3UOXCLBZNOC57X7APWI" target="_blank" rel="noopener" class="release-btn release-btn-buy-active">Buy Direct</a>
-      <span class="release-btn release-btn-supporter-inactive">Supporter Pack</span>
-      <a href="https://youtube.com/playlist?list=PLg78G-3jZMr66QrJty79-cBO2d2_WyHRt&si=mLyKbaM3AJAms9b8" target="_blank" rel="noopener" class="release-btn release-btn-yt">YouTube</a>
+      <div class="release-btns-wrap">
+        <a href="https://thephreshfactory.square.site/product/CYRUS-NIGHTMAREZ_Full-Album_Digital-Download/19?cp=true&sa=false&sbp=false&q=false&category_id=BIG6N3UOXCLBZNOC57X7APWI" target="_blank" rel="noopener" class="release-btn release-btn-buy-active">Buy Direct</a>
+        <span class="release-btn release-btn-supporter-inactive">Supporter Pack</span>
+        <a href="https://youtube.com/playlist?list=PLg78G-3jZMr66QrJty79-cBO2d2_WyHRt&si=mLyKbaM3AJAms9b8" target="_blank" rel="noopener" class="release-btn release-btn-yt">YouTube</a>
+      </div>
     </div>
 
     <div class="release-row">
@@ -1299,9 +1547,11 @@
       </div>
       <span class="release-type">Album</span>
       <span class="release-status-plain-soon">Coming Soon</span>
-      <span class="release-btn release-btn-disabled">Buy Direct</span>
-      <span class="release-btn release-btn-disabled">Supporter Pack</span>
-      <span class="release-btn release-btn-disabled">YouTube</span>
+      <div class="release-btns-wrap">
+        <span class="release-btn release-btn-disabled">Buy Direct</span>
+        <span class="release-btn release-btn-disabled">Supporter Pack</span>
+        <span class="release-btn release-btn-disabled">YouTube</span>
+      </div>
     </div>
 
   </div>
@@ -1505,6 +1755,21 @@
     });
   });
 
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+  });
+  // Close mobile nav when a link is tapped
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileNav.classList.remove('open');
+    });
+  });
+
   // Google Places Autocomplete (New API)
   async function initAutocomplete() {
     const { AutocompleteSessionToken, AutocompleteSuggestion } = await google.maps.importLibrary("places");
@@ -1575,7 +1840,6 @@
     msgEl.className = 'signup-msg';
     msgEl.textContent = '';
 
-    // Validate email
     if (!emailVal || !emailVal.includes('@')) {
       document.getElementById('signup-email').style.borderColor = '#cc0000';
       setTimeout(() => document.getElementById('signup-email').style.borderColor = '', 1500);
@@ -1586,7 +1850,6 @@
     btn.textContent = 'Sending...';
 
     try {
-      // Build contact payload
       const payload = {
         email: emailVal,
         attributes: {
@@ -1600,7 +1863,6 @@
         updateEnabled: true
       };
 
-      // Remove undefined attributes
       Object.keys(payload.attributes).forEach(k => {
         if (payload.attributes[k] === undefined) delete payload.attributes[k];
       });
@@ -1622,7 +1884,6 @@
         document.getElementById('signup-location').value = '';
       } else {
         const err = await res.json();
-        // 400 with "Contact already exist" is still a success
         if (err.message && err.message.toLowerCase().includes('already exist')) {
           msgEl.textContent = "// You're already on the list.";
           msgEl.className = 'signup-msg success';
