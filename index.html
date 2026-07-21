@@ -1867,41 +1867,56 @@
     if (!input) return;
 
     let sessionToken = new AutocompleteSessionToken();
-    let suggestionBox = null;
+let suggestionBox = null;
+let requestId = 0;
 
-    function removeSuggestions() {
-      if (suggestionBox) { suggestionBox.remove(); suggestionBox = null; }
-    }
+function removeSuggestions() {
+  if (suggestionBox) { suggestionBox.remove(); suggestionBox = null; }
+}
 
-    input.addEventListener('input', async () => {
-      const val = input.value.trim();
-      removeSuggestions();
-      if (val.length < 2) return;
+input.addEventListener('input', async () => {
+  const val = input.value.trim();
+  removeSuggestions();
+  if (val.length < 2) return;
 
-      try {
-        const { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions({
-          input: val,
-          sessionToken,
-          includedPrimaryTypes: ['(cities)']
-        });
+  const thisRequest = ++requestId;
 
-        if (!suggestions || suggestions.length === 0) return;
+  try {
+    const { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions({
+      input: val,
+      sessionToken,
+      includedPrimaryTypes: ['(cities)']
+    });
 
-        suggestionBox = document.createElement('div');
-        suggestionBox.style.cssText = 'position:absolute;left:0;right:0;top:100%;background:#181818;border:1px solid #2e2e2e;border-top:none;z-index:9999;';
+    if (thisRequest !== requestId) return;
+    if (!suggestions || suggestions.length === 0) return;
 
-        suggestions.slice(0, 5).forEach(s => {
-          const item = document.createElement('div');
-          item.textContent = s.placePrediction.text.toString();
-          item.style.cssText = 'padding:0.6rem 1.2rem;font-size:0.82rem;color:#777;cursor:pointer;font-family:Inter,sans-serif;border-top:1px solid #2e2e2e;';
-          item.addEventListener('mouseenter', () => item.style.background = '#232323');
-          item.addEventListener('mouseleave', () => item.style.background = '');
-          item.addEventListener('mousedown', async (e) => {
-            e.preventDefault();
-            input.value = s.placePrediction.text.toString();
-            sessionToken = new AutocompleteSessionToken();
-            removeSuggestions();
-            input.blur();
+    suggestionBox = document.createElement('div');
+    suggestionBox.style.cssText = 'position:absolute;left:0;right:0;top:100%;background:#181818;border:1px solid #2e2e2e;border-top:none;z-index:9999;';
+
+    suggestions.slice(0, 5).forEach(s => {
+      const item = document.createElement('div');
+      item.textContent = s.placePrediction.text.toString();
+      item.style.cssText = 'padding:0.6rem 1.2rem;font-size:0.82rem;color:#777;cursor:pointer;font-family:Inter,sans-serif;border-top:1px solid #2e2e2e;';
+      item.addEventListener('mouseenter', () => item.style.background = '#232323');
+      item.addEventListener('mouseleave', () => item.style.background = '');
+      item.addEventListener('mousedown', async (e) => {
+        e.preventDefault();
+        requestId++;
+        input.value = s.placePrediction.text.toString();
+        sessionToken = new AutocompleteSessionToken();
+        removeSuggestions();
+        input.blur();
+      });
+      suggestionBox.appendChild(item);
+    });
+
+    input.parentNode.style.position = 'relative';
+    input.parentNode.appendChild(suggestionBox);
+  } catch(err) {
+    console.error('Places error:', err);
+  }
+});
           });
           suggestionBox.appendChild(item);
         });
