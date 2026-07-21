@@ -1957,11 +1957,10 @@
         if (payload.attributes[k] === undefined) delete payload.attributes[k];
       });
 
-      const res = await fetch('https://api.brevo.com/v3/contacts', {
+      const res = await fetch('https://hook.us2.make.com/6zr1q24r1up9sm7uo7x5i6734wupsi3w', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'api-key': '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'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
       });
