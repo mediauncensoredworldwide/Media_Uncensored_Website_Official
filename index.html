@@ -1868,6 +1868,7 @@
 
     let sessionToken = new AutocompleteSessionToken();
     let suggestionBox = null;
+    let requestId = 0;
 
     function removeSuggestions() {
       if (suggestionBox) { suggestionBox.remove(); suggestionBox = null; }
@@ -1877,6 +1878,7 @@
       const val = input.value.trim();
       removeSuggestions();
       if (val.length < 2) return;
+      const thisRequest = ++requestId;
 
       try {
         const { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions({
@@ -1885,6 +1887,7 @@
           includedPrimaryTypes: ['(cities)']
         });
 
+        if (thisRequest !== requestId) return;
         if (!suggestions || suggestions.length === 0) return;
 
         suggestionBox = document.createElement('div');
@@ -1898,6 +1901,7 @@
           item.addEventListener('mouseleave', () => item.style.background = '');
           item.addEventListener('mousedown', async (e) => {
             e.preventDefault();
+            requestId++;
             input.value = s.placePrediction.text.toString();
             sessionToken = new AutocompleteSessionToken();
             removeSuggestions();
